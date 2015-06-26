@@ -15,17 +15,20 @@ class Page():
         self.baseURL = url
 
     def getLinks(self):
-        # get the source text of the page
-        page = requests.get(self.baseURL).text
+        try:
+            # get the source text of the page
+            page = requests.get(self.baseURL).text
 
-        # parse all the links on the page
-        links = BeautifulSoup(page, parse_only=SoupStrainer('a'))
+            # parse all the links on the page
+            links = BeautifulSoup(page, parse_only=SoupStrainer('a'))
 
-        # hanlding relative and absolute URLs
-        for link in links:
-            if link.has_attr('href'):
-                l = parse.urljoin(self.baseURL, link['href'])
-                self.links.append(l)
+            # hanlding relative and absolute URLs
+            for link in links:
+                if link.has_attr('href'):
+                    l = parse.urljoin(self.baseURL, link['href'])
+                    self.links.append(l)
+        except requests.exceptions.MissingSchema as error:
+            print(error)
 
         return self.links
 
@@ -68,10 +71,6 @@ def startSpider(startUrl, maxLinksToFetch, links_repository):
             else:
                 pagesToVisit.append(link)
                 links_repository.append(link)
-
-    # if no more pages are remaining to visit
-    if (numberFetched < maxLinksToFetch) and (len(pagesToVisit) == 0):
-        print("Not enough pages on the INTERNET!")
 
 # main function
 if __name__=='__main__':
