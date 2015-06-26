@@ -7,6 +7,12 @@ from urllib import parse
 # Links fetched by crawling the internet.
 links_repository = []
 
+def print_repository():
+    for i in range(1, len(links_repository)+1):
+        print(i, links_repository[i-1])
+
+    print('No of links fetched :', len(links_repository))
+
 # reprents a page
 class Page():
 
@@ -36,8 +42,7 @@ def handle(signal, frame):
     print('\nCrawling has been stopped!')
 
     # print the links repository when the crawling has been stopped
-    for i in range(1, len(links_repository)+1):
-        print(i, links_repository[i-1])
+    print_repository()
 
     # stop crawling
     sys.exit(0)
@@ -84,5 +89,4 @@ if __name__=='__main__':
     startSpider(startUrl, maxLinksToFetch, links_repository)
 
     # print all the links that have been fetched
-    for i in range(1, len(links_repository)+1):
-        print(i, links_repository[i-1])
+    print_repository()
