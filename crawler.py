@@ -48,7 +48,7 @@ def startSpider(startUrl, maxLinksToFetch, links_repository):
     pagesToVisit = [startUrl]
     numberFetched = 0
 
-    # crawl until maximum links allowed are not fetched and there are still pages to visit
+    # crawl until maximum links allowed are fetched and there are still pages to visit
     while (numberFetched < maxLinksToFetch) and (len(pagesToVisit) > 0):
         url = pagesToVisit[0]
         print('Visiting : ' + url)
