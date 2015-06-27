@@ -47,8 +47,7 @@ class Page():
                 # hanlding relative and absolute URLs
                 for link in links:
                     if link.has_attr('href'):
-                        l = parse.urljoin(self.baseURL, link['href'])
-                        self.links.append(l)
+                        self.links.append(parse.urljoin(self.baseURL, link['href']))
 
         except requests.exceptions.MissingSchema as error:
             print(error)
