@@ -41,7 +41,7 @@ class Page():
             if resp.status_code != 200:
                 print('Something went wrong. Check the URL')
             else:
-            # parse all the links on the page
+                # parse all the links on the page
                 links = BeautifulSoup(page, parse_only=SoupStrainer('a'))
 
                 # hanlding relative and absolute URLs
