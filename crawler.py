@@ -4,14 +4,26 @@ import requests
 from bs4 import BeautifulSoup, SoupStrainer
 from urllib import parse
 
-# Links fetched by crawling the internet.
-links_repository = []
+# Represents Links Repository
+class LinksDatabase():
 
-def print_repository():
-    for i in range(1, len(links_repository)+1):
-        print(i, links_repository[i-1])
+    def __init__(self):
+        self.links = []
 
-    print('No of links fetched :', len(links_repository))
+    def get_len(self):
+        return len(self.links)
+
+    def add_link(self, link):
+        self.links.append(link)
+
+    def print_repository(self):
+        for i in range(1, self.get_len()+1):
+            print(i, self.links[i-1])
+
+        print('No of links fetched :', self.get_len())
+
+# Create a links database instance
+links_db = LinksDatabase()
 
 # reprents a page
 class Page():
@@ -41,8 +53,8 @@ class Page():
 def handle(signal, frame):
     print('\nCrawling has been stopped!')
 
-    # print the links repository when the crawling has been stopped
-    print_repository()
+    # print the links fetched
+    links_db.print_repository()
 
     # stop crawling
     sys.exit(0)
@@ -52,7 +64,7 @@ def registerSignal():
     signal.signal(signal.SIGINT, handle)
 
 # spider which crawls
-def startSpider(startUrl, maxLinksToFetch, links_repository):
+def startSpider(startUrl, maxLinksToFetch, links_db):
     pagesToVisit = [startUrl]
     numberFetched = 0
 
@@ -75,7 +87,7 @@ def startSpider(startUrl, maxLinksToFetch, links_repository):
                 break
             else:
                 pagesToVisit.append(link)
-                links_repository.append(link)
+                links_db.add_link(link)
 
 # main function
 if __name__=='__main__':
@@ -86,7 +98,7 @@ if __name__=='__main__':
     registerSignal()
 
     # start the spider here
-    startSpider(startUrl, maxLinksToFetch, links_repository)
+    startSpider(startUrl, maxLinksToFetch, links_db)
 
     # print all the links that have been fetched
-    print_repository()
+    links_db.print_repository()
