@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup, SoupStrainer
 from urllib import parse
 
-# Represents Links Repository
+# represents Links Repository
 class LinksDatabase():
 
     def __init__(self):
@@ -18,11 +18,11 @@ class LinksDatabase():
 
     def print_repository(self):
         for i in range(1, self.get_len()+1):
-            print(i, self.links[i-1])
+            print(i, '\t',self.links[i-1])
 
-        print('No of links fetched :', self.get_len())
+        print('\nNo of links fetched :', self.get_len())
 
-# Create a links database instance
+# create a links database instance
 links_db = LinksDatabase()
 
 # reprents a page
@@ -35,16 +35,21 @@ class Page():
     def getLinks(self):
         try:
             # get the source text of the page
-            page = requests.get(self.baseURL).text
+            resp = requests.get(self.baseURL)
+            page = resp.text
 
+            if resp.status_code != 200:
+                print('Something went wrong. Check the URL')
+            else:
             # parse all the links on the page
-            links = BeautifulSoup(page, parse_only=SoupStrainer('a'))
+                links = BeautifulSoup(page, parse_only=SoupStrainer('a'))
 
-            # hanlding relative and absolute URLs
-            for link in links:
-                if link.has_attr('href'):
-                    l = parse.urljoin(self.baseURL, link['href'])
-                    self.links.append(l)
+                # hanlding relative and absolute URLs
+                for link in links:
+                    if link.has_attr('href'):
+                        l = parse.urljoin(self.baseURL, link['href'])
+                        self.links.append(l)
+
         except requests.exceptions.MissingSchema as error:
             print(error)
 
@@ -64,7 +69,7 @@ def registerSignal():
     signal.signal(signal.SIGINT, handle)
 
 # spider which crawls
-def startSpider(startUrl, maxLinksToFetch, links_db):
+def startSpider(startUrl, maxLinksToFetch):
     pagesToVisit = [startUrl]
     numberFetched = 0
 
@@ -98,7 +103,7 @@ if __name__=='__main__':
     registerSignal()
 
     # start the spider here
-    startSpider(startUrl, maxLinksToFetch, links_db)
+    startSpider(startUrl, maxLinksToFetch)
 
     # print all the links that have been fetched
     links_db.print_repository()
