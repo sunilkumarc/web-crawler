@@ -1,0 +1,6 @@
+Enter start URL (Default - https://gocardless.com) : https://gocardless.com/robots.txt
+Exclusion : .*/connect/.*|.*/pay/.*|.*/merchants/.*|.*/users/.*|.*/oauth/.*|.*/health_check/.*|.*/api/.*
+Visiting :  https://gocardless.com/
+Visiting :  https://gocardless.com/en-us/
+
+Crawling has been stopped!
